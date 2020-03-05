@@ -1,0 +1,83 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+///   Commented JSON Reader 64Bit V1.00
+///
+///	  来歴	
+///	  C#、ASP.Netでは、「//」ではコメント入りのJSONがプログラムが勝手に読み込めます。
+///   「JSONにはコメント入れられるんだよね」が普通と思っていました。
+///   しかし、仕様書（https://tools.ietf.org/html/rfc4627）では「そんなのないよ」でした。
+///   C++のboost libraryを使用し発覚。
+///   コメントのない設定ファイルは「使えない」ため、MS形式のコメントが入れられるようにしたいと思いました。
+///   boost libraryを書き換えるより、プリプロを作ってしまえば問題解決。
+///
+///	  履歴	
+///   2020/03/05 V1.00 First 
+///
+///                        Copyright(c) 2020, Retar.jp, All Rights Reserved.
+///                        http://www.retar.jp/
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <list>
+
+#include <boost/filesystem.hpp>
+#include <boost/regex.hpp>
+#include <boost/xpressive/xpressive.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///JSONファイルを読み込む
+///
+///入力:
+/// 読み込みJSONオブジェクト => JSONptree
+/// 入力ファイル => strfparam
+///
+void ReadJSON(
+	std::string& strfparam,
+	boost::property_tree::ptree& JSONptree
+);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///JSONクリーニング・ファイル変換
+///
+///入力:
+/// 入力ファイル => strfparam
+/// 出力ファイルヘッダ => outheadder
+///
+void CleanJSON(
+	std::string& strfparam,
+	std::string outheadder = "TMPFILE_"
+);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///JSONのコメント外しストリーム
+///
+///入力:
+/// コメント入りJSONを読み込み => JSONClean
+///
+///出力:
+/// コメントを外したJSONテキスト返し => std::stringstream 
+///
+std::stringstream CleanJSONFuncStream(
+	std::list<std::string> &JSONClean
+);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///JSONのコメント外し
+///
+///入力:
+/// コメントなしJSONを読み込み => JSONClean
+/// 入力ファイル => fparam
+/// 出力ファイルヘッダ => outheadder
+///
+void CleanJSONFunc(
+	std::list<std::string> &JSONClean,
+	std::string &fparam,
+	std::string outheadder = "TMPFILE_"
+);
+
